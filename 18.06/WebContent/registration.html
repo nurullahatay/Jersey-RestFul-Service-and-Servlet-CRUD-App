@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Registration</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+	$(function() {
+		$("#includedContent").load("navbar.html");
+	});
+
+	function new_element() {
+		$("#phones li")
+				.append(
+						'<div class="form-group"> <label for="text">Phone Number 1:</label> <input type="text" class="form-control" placeholder="Enter phone number 1" name="phoneNumber1"> </div>');
+	}
+
+	$(document)
+			.ready(
+					function() {
+
+						var counter = 2;
+
+						$("#addButton")
+								.click(
+										function() {
+
+											if (counter > 10) {
+												alert("Only 10 textboxes allow");
+												return false;
+											}
+
+											var newTextBoxDiv = $(
+													document
+															.createElement('div'))
+													.attr("id",
+															'phones' + counter);
+
+											newTextBoxDiv
+													.after()
+													.html(
+															'<label for="text" >Phone Number '
+																	+ counter
+																	+ ' : </label>'
+																	+ '<input type="text" class="form-control" placeholder="Enter phone number '+counter+'" name="phoneNumber[' + counter + 
+		      ']" id="textbox' + counter + '" value="" >');
+
+											newTextBoxDiv
+													.appendTo("#TextBoxesGroup");
+
+											counter++;
+										});
+
+						$("#removeButton").click(function() {
+							if (counter == 1) {
+								alert("No more textbox to remove");
+								return false;
+							}
+							$("#phones" + counter).remove();
+							counter--;
+							console.log(counter);
+						});
+
+						$("#postCustomer")
+								.click(
+										function() {
+											var customer = {}
+											customer["name"] = $("#name").val();
+											customer["surname"] = $("#surname")
+													.val();
+											var phones = [];
+											for (i = 1; i < counter; i++) {
+												phones.push({
+													phoneNumber : $(
+															'#textbox' + i)
+															.val()
+												});
+											}
+											customer["customerPhoneDTOList"] = phones;
+											$
+													.ajax({
+														type : "POST",
+														contentType : "application/json",
+														url : "http://localhost:8080/18.06/jersey/customers",
+														data : JSON
+																.stringify(customer),
+														dataType : 'json',
+														cache : false,
+														timeout : 100000,
+														success : function(data) {
+															alert("SUCCESS : ",data);
+														},
+														error : function(e) {
+															alert("ERROR : ",e);
+														}
+													});
+
+										});
+					});
+</script>
+</head>
+<body>
+	<div id="includedContent"></div>
+	<div class="container ">
+		<div class="col-lg-4">
+			<div class="page-header">
+				<h2>Customer Registration</h2>
+			</div>
+			<form class="form-top">
+				<div class="form-group">
+					<label for="text">Name:</label> <input type="text"
+						class="form-control" placeholder="Enter Name" name="name"
+						id="name">
+				</div>
+				<div class="form-group">
+					<label for="text">Surname:</label> <input type="text"
+						class="form-control" placeholder="Enter username" name="surname"
+						id="surname">
+				</div>
+				<div id='TextBoxesGroup'>
+					<div id="phones">
+						<div class="form-group">
+							<label for="text">Phone Number 1:</label> <input type="text"
+								class="form-control" placeholder="Enter phone number 1"
+								name="phoneNumber[1]" id="textbox1">
+						</div>
+
+					</div>
+				</div>
+				<br> <input type='button' class="btn btn-info btn-xs"
+					value='Add Phone' id='addButton'> <input type='button'
+					class="btn btn-info btn-xs" value='Remove Phone' id='removeButton'>
+				<br> <br>
+				<button type="submit" class="btn btn-success btn-md"
+					id="postCustomer" data-toggle="modal" data-target="#myModal">Submit</button>
+			</form>
+			
+		</div>
+	</div>
+	<div class="container">
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>18.06</display-name>
+	<welcome-file-list>
+		<welcome-file>registration.html</welcome-file>
+		<welcome-file>customerList.jsp</welcome-file>
+
+	</welcome-file-list>
+	<servlet>
+		<servlet-name>CustomerRegister</servlet-name>
+		<servlet-class>controllers.CustomerRegister</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CustomerRegister</servlet-name>
+		<url-pattern>/customerRegister</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ShowCustomers</servlet-name>
+		<servlet-class>controllers.ShowCustomers</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ShowCustomers</servlet-name>
+		<url-pattern>/showCustomers</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>DeleteCustomer</servlet-name>
+		<servlet-class>controllers.DeleteCustomer</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteCustomer</servlet-name>
+		<url-pattern>/delete</url-pattern>
+	</servlet-mapping>
+
+	<listener>
+		<listener-class>listener.ServletContextListenerImpl</listener-class>
+	</listener>
+
+	<context-param>
+		<param-name>log4jConfiguration</param-name>
+		<param-value>log4j.xml</param-value>
+	</context-param>
+
+
+	<!-- <security-constraint> <web-resource-collection> <web-resource-name>authentication</web-resource-name> 
+		<url-pattern>/*</url-pattern> <http-method>GET</http-method> <http-method>POST</http-method> 
+		</web-resource-collection> <auth-constraint> <role-name>role1</role-name> 
+		</auth-constraint> <user-data-constraint> <transport-guarantee>CONFIDENTIAL</transport-guarantee> 
+		</user-data-constraint> </security-constraint> <login-config> <auth-method>FORM</auth-method> 
+		<form-login-config> <form-login-page>/login.html</form-login-page> <form-error-page>/login-failed.html</form-error-page> 
+		</form-login-config> </login-config> -->
+	<servlet>
+		<servlet-name>LogoutServlet</servlet-name>
+		<servlet-class>controllers.LogoutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LogoutServlet</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+
+
+
+	<security-constraint>
+		<display-name>Constraint1</display-name>
+		<web-resource-collection>
+			<web-resource-name></web-resource-name>
+			<url-pattern>/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>tomcat</role-name>
+		</auth-constraint>
+		<!-- <user-data-constraint> <transport-guarantee>CONFIDENTIAL</transport-guarantee> 
+			</user-data-constraint> -->
+	</security-constraint>
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/login.html</form-login-page>
+			<form-error-page>/login-failed.html</form-error-page>
+		</form-login-config>
+	</login-config>
+
+	<security-role>
+		<role-name>tomcat</role-name>
+	</security-role>
+
+	<!-- <security-constraint> <web-resource-collection> <web-resource-name>All 
+		Page</web-resource-name> <url-pattern>/*</url-pattern> </web-resource-collection> 
+		<auth-constraint> <role-name>role1</role-name> </auth-constraint> </security-constraint> 
+		<login-config> <auth-method>BASIC</auth-method> </login-config> -->
+
+	<servlet>
+		<servlet-name>Jersey</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>jersey</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Jersey</servlet-name>
+		<url-pattern>/jersey/*</url-pattern>
+	</servlet-mapping>
+</web-app>
